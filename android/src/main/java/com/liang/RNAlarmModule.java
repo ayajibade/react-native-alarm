@@ -103,7 +103,7 @@ public class RNAlarmModule extends ReactContextBaseJavaModule {
     }
 
     @ReactMethod
-    public void setAlarm(String triggerTime, String title, @Nullable String isRetry, @Nullable String musicUri, @Nullable Callback successCallback, @Nullable Callback errorCallback) {
+    public void setAlarm(String triggerTime, int interval, String title, @Nullable String isRetry, @Nullable String musicUri, @Nullable Callback successCallback, @Nullable Callback errorCallback) {
         try {
             Boolean alarmStatus = getAlarmStatus(triggerTime);
             if(isRetry != null && !isRetry.isEmpty())
@@ -145,7 +145,8 @@ public class RNAlarmModule extends ReactContextBaseJavaModule {
                 formatter.format(calendar.getTime());
 
 
-                alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTimeMillis, pendingIntent);
+                //alarmManager.setExact(AlarmManager.RTC_WAKEUP, triggerTimeMillis, pendingIntent);
+                   alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, triggerTimeMillis, interval * AlarmManager.INTERVAL_DAY, pendingIntent);
                 setAlarm1(triggerTime,triggerTime);
 
                 successCallback.invoke();
